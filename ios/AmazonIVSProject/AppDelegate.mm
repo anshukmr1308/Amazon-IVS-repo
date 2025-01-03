@@ -1,6 +1,8 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <React/RCTBridgeModule.h>
+#import <AmazonIVSBroadcast/AmazonIVSBroadcast.h>
 
 @implementation AppDelegate
 
@@ -13,6 +15,7 @@
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
+
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
@@ -27,5 +30,7 @@
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
+
+
 
 @end

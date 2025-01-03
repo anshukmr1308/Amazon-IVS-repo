@@ -15,6 +15,26 @@
 		58962363DE11F39EF6635D40 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		7699B88040F8A987B510C191 /* libPods-AmazonIVSProject-AmazonIVSProjectTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-AmazonIVSProject-AmazonIVSProjectTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9A42689D2D25618C003E127C /* AmazonIVSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A42689C2D25618C003E127C /* AmazonIVSManager.m */; };
+		9A42689F2D2561B9003E127C /* BroadcastManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A42689E2D2561B9003E127C /* BroadcastManagerBridge.m */; };
+		9A4268A12D2561DE003E127C /* BroadcastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4268A02D2561DE003E127C /* BroadcastManager.swift */; };
+		9A4268A72D2566D9003E127C /* IVSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4268A62D2566D9003E127C /* IVSManager.swift */; };
+		9A4268A92D25671D003E127C /* IVSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4268A82D25671D003E127C /* IVSManager.m */; };
+		9A4268AB2D257DBF003E127C /* ServerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4268AA2D257DBF003E127C /* ServerBridge.m */; };
+		9A4268AD2D257E1E003E127C /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4268AC2D257E1E003E127C /* ServerManager.swift */; };
+		9A6B1E222D25517A005A232A /* AmazonIVSPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6B1E212D25517A005A232A /* AmazonIVSPlayerViewManager.m */; };
+		9A6B1E252D2551DA005A232A /* AmazonIVSPlayerViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6B1E242D2551DA005A232A /* AmazonIVSPlayerViewManager.swift */; };
+		9A9E40492D26624200965431 /* IVSBroadcastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E40482D26624200965431 /* IVSBroadcastManager.swift */; };
+		9A9E404B2D2662F300965431 /* IVSBroadcastBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E404A2D2662F300965431 /* IVSBroadcastBridge.swift */; };
+		9A9E404D2D26990100965431 /* BroadcastingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E404C2D26990100965431 /* BroadcastingView.swift */; };
+		9A9E404F2D26994600965431 /* BroadcastingViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E404E2D26994600965431 /* BroadcastingViewManager.swift */; };
+		9A9E40512D26998E00965431 /* BroadcastingViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E40502D26998E00965431 /* BroadcastingViewManager.m */; };
+		9A9E40532D26A53500965431 /* BroadcastingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E40522D26A53500965431 /* BroadcastingViewController.swift */; };
+		9A9E40552D26D49C00965431 /* AmazonIVSBroadcastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E40542D26D49C00965431 /* AmazonIVSBroadcastView.swift */; };
+		9A9E40572D26EB8E00965431 /* AmazonIVSBroadcastViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E40562D26EB8E00965431 /* AmazonIVSBroadcastViewManager.swift */; };
+		9A9E40592D26EBB700965431 /* AmazonIVSBroadcastViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E40582D26EBB700965431 /* AmazonIVSBroadcastViewManager.m */; };
+		9A9E405B2D277A2000965431 /* BroadcastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E405A2D277A2000965431 /* BroadcastDelegate.swift */; };
+		9A9E405D2D277A6F00965431 /* BroadcastManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E405C2D277A6F00965431 /* BroadcastManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +65,27 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-AmazonIVSProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AmazonIVSProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AmazonIVSProject/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-AmazonIVSProject-AmazonIVSProjectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmazonIVSProject-AmazonIVSProjectTests.release.xcconfig"; path = "Target Support Files/Pods-AmazonIVSProject-AmazonIVSProjectTests/Pods-AmazonIVSProject-AmazonIVSProjectTests.release.xcconfig"; sourceTree = "<group>"; };
+		9A42689C2D25618C003E127C /* AmazonIVSManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AmazonIVSManager.m; sourceTree = "<group>"; };
+		9A42689E2D2561B9003E127C /* BroadcastManagerBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BroadcastManagerBridge.m; sourceTree = "<group>"; };
+		9A4268A02D2561DE003E127C /* BroadcastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastManager.swift; sourceTree = "<group>"; };
+		9A4268A62D2566D9003E127C /* IVSManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IVSManager.swift; sourceTree = "<group>"; };
+		9A4268A82D25671D003E127C /* IVSManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IVSManager.m; sourceTree = "<group>"; };
+		9A4268AA2D257DBF003E127C /* ServerBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerBridge.m; sourceTree = "<group>"; };
+		9A4268AC2D257E1E003E127C /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
+		9A6B1E212D25517A005A232A /* AmazonIVSPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AmazonIVSPlayerViewManager.m; sourceTree = "<group>"; };
+		9A6B1E232D2551D9005A232A /* AmazonIVSProject-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmazonIVSProject-Bridging-Header.h"; sourceTree = "<group>"; };
+		9A6B1E242D2551DA005A232A /* AmazonIVSPlayerViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonIVSPlayerViewManager.swift; sourceTree = "<group>"; };
+		9A9E40482D26624200965431 /* IVSBroadcastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IVSBroadcastManager.swift; sourceTree = "<group>"; };
+		9A9E404A2D2662F300965431 /* IVSBroadcastBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IVSBroadcastBridge.swift; sourceTree = "<group>"; };
+		9A9E404C2D26990100965431 /* BroadcastingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastingView.swift; sourceTree = "<group>"; };
+		9A9E404E2D26994600965431 /* BroadcastingViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastingViewManager.swift; sourceTree = "<group>"; };
+		9A9E40502D26998E00965431 /* BroadcastingViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BroadcastingViewManager.m; sourceTree = "<group>"; };
+		9A9E40522D26A53500965431 /* BroadcastingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastingViewController.swift; sourceTree = "<group>"; };
+		9A9E40542D26D49C00965431 /* AmazonIVSBroadcastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonIVSBroadcastView.swift; sourceTree = "<group>"; };
+		9A9E40562D26EB8E00965431 /* AmazonIVSBroadcastViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonIVSBroadcastViewManager.swift; sourceTree = "<group>"; };
+		9A9E40582D26EBB700965431 /* AmazonIVSBroadcastViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AmazonIVSBroadcastViewManager.m; sourceTree = "<group>"; };
+		9A9E405A2D277A2000965431 /* BroadcastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastDelegate.swift; sourceTree = "<group>"; };
+		9A9E405C2D277A6F00965431 /* BroadcastManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BroadcastManager.m; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -95,6 +136,27 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				9A6B1E212D25517A005A232A /* AmazonIVSPlayerViewManager.m */,
+				9A6B1E242D2551DA005A232A /* AmazonIVSPlayerViewManager.swift */,
+				9A6B1E232D2551D9005A232A /* AmazonIVSProject-Bridging-Header.h */,
+				9A42689C2D25618C003E127C /* AmazonIVSManager.m */,
+				9A42689E2D2561B9003E127C /* BroadcastManagerBridge.m */,
+				9A4268A02D2561DE003E127C /* BroadcastManager.swift */,
+				9A4268A62D2566D9003E127C /* IVSManager.swift */,
+				9A4268A82D25671D003E127C /* IVSManager.m */,
+				9A4268AA2D257DBF003E127C /* ServerBridge.m */,
+				9A4268AC2D257E1E003E127C /* ServerManager.swift */,
+				9A9E40482D26624200965431 /* IVSBroadcastManager.swift */,
+				9A9E404A2D2662F300965431 /* IVSBroadcastBridge.swift */,
+				9A9E404C2D26990100965431 /* BroadcastingView.swift */,
+				9A9E404E2D26994600965431 /* BroadcastingViewManager.swift */,
+				9A9E40502D26998E00965431 /* BroadcastingViewManager.m */,
+				9A9E40522D26A53500965431 /* BroadcastingViewController.swift */,
+				9A9E40542D26D49C00965431 /* AmazonIVSBroadcastView.swift */,
+				9A9E40562D26EB8E00965431 /* AmazonIVSBroadcastViewManager.swift */,
+				9A9E40582D26EBB700965431 /* AmazonIVSBroadcastViewManager.m */,
+				9A9E405A2D277A2000965431 /* BroadcastDelegate.swift */,
+				9A9E405C2D277A6F00965431 /* BroadcastManager.m */,
 			);
 			name = AmazonIVSProject;
 			sourceTree = "<group>";
@@ -209,7 +271,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1600;
 					};
 				};
 			};
@@ -396,8 +458,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A4268A72D2566D9003E127C /* IVSManager.swift in Sources */,
+				9A9E40552D26D49C00965431 /* AmazonIVSBroadcastView.swift in Sources */,
+				9A42689F2D2561B9003E127C /* BroadcastManagerBridge.m in Sources */,
+				9A9E405B2D277A2000965431 /* BroadcastDelegate.swift in Sources */,
+				9A9E40592D26EBB700965431 /* AmazonIVSBroadcastViewManager.m in Sources */,
+				9A4268A12D2561DE003E127C /* BroadcastManager.swift in Sources */,
+				9A4268A92D25671D003E127C /* IVSManager.m in Sources */,
+				9A9E40492D26624200965431 /* IVSBroadcastManager.swift in Sources */,
+				9A9E40532D26A53500965431 /* BroadcastingViewController.swift in Sources */,
+				9A9E40572D26EB8E00965431 /* AmazonIVSBroadcastViewManager.swift in Sources */,
+				9A6B1E252D2551DA005A232A /* AmazonIVSPlayerViewManager.swift in Sources */,
+				9A42689D2D25618C003E127C /* AmazonIVSManager.m in Sources */,
+				9A9E404D2D26990100965431 /* BroadcastingView.swift in Sources */,
+				9A9E405D2D277A6F00965431 /* BroadcastManager.m in Sources */,
+				9A4268AB2D257DBF003E127C /* ServerBridge.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				9A6B1E222D25517A005A232A /* AmazonIVSPlayerViewManager.m in Sources */,
+				9A9E40512D26998E00965431 /* BroadcastingViewManager.m in Sources */,
+				9A9E404B2D2662F300965431 /* IVSBroadcastBridge.swift in Sources */,
+				9A9E404F2D26994600965431 /* BroadcastingViewManager.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				9A4268AD2D257E1E003E127C /* ServerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,6 +552,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 36J6T6XLS2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = AmazonIVSProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -485,6 +568,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = AmazonIVSProject;
+				SWIFT_OBJC_BRIDGING_HEADER = "AmazonIVSProject-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -498,6 +582,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 36J6T6XLS2;
 				INFOPLIST_FILE = AmazonIVSProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -512,6 +597,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = AmazonIVSProject;
+				SWIFT_OBJC_BRIDGING_HEADER = "AmazonIVSProject-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -586,10 +672,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -658,10 +741,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
