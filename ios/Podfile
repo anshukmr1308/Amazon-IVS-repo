@@ -23,8 +23,10 @@ target 'AmazonIVSProject' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
- pod 'AmazonIVSPlayer'
-  pod 'AmazonIVSBroadcast'
+#  pod 'AmazonIVSPlayer'
+    pod 'AmazonIVSChat', '~> 1.0.0'
+    pod 'AmazonIVSBroadcast/Stages', '~> 1.13.0'
+    pod 'AmazonIVSPlayer'
 
   target 'AmazonIVSProjectTests' do
     inherit! :complete

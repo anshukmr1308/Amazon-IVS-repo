@@ -1,46 +1,32 @@
-//
-//  ServerBridge.m
-//  AmazonIVSProject
-//
-//  Created by macmini on 01/01/25.
-//
-
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 
 @interface RCT_EXTERN_MODULE(ServerManager, NSObject)
 
-// MARK: - Create Stage
 RCT_EXTERN_METHOD(createStage:(NSString *)userId
                   username:(NSString *)username
                   avatarUrl:(NSString *)avatarUrl
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 
-// MARK: - List Stages
-RCT_EXTERN_METHOD(listStages:(RCTPromiseResolveBlock)resolve
+RCT_EXTERN_METHOD(getAllStages:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 
-// MARK: - Join Stage
-RCT_EXTERN_METHOD(joinStage:(NSString *)userId
-                  groupId:(NSString *)groupId
+RCT_EXTERN_METHOD(joinStage:(NSString *)groupId
+                  userId:(NSString *)userId
                   username:(NSString *)username
                   avatarUrl:(NSString *)avatarUrl
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 
-// MARK: - Delete Stage
 RCT_EXTERN_METHOD(deleteStage:(NSString *)groupId
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 
-// MARK: - Disconnect Participant
-RCT_EXTERN_METHOD(disconnectParticipant:(NSString *)groupId
-                  participantId:(NSString *)participantId
+RCT_EXTERN_METHOD(disconnect:(NSString *)participantId
+                  groupId:(NSString *)groupId
                   userId:(NSString *)userId
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 
 @end
-
-

@@ -9,7 +9,14 @@
 #import <React/RCTEventEmitter.h>
 #import "React/RCTViewManager.h"
 #import <AmazonIVSBroadcast/AmazonIVSBroadcast.h>
+#import <AmazonIVSBroadcast/IVSBase.h>
+#import <AmazonIVSBroadcast/IVSStage.h>
 
 @interface PermissionsManager : NSObject <RCTBridgeModule>
-
 @end
+
+@interface RCT_EXTERN_MODULE(AmazonIVSBroadcastViewManager, RCTViewManager)
+RCT_EXTERN_METHOD(createStage: (RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+@end
+

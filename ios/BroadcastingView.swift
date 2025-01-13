@@ -1,63 +1,128 @@
-////
-////  BroadcastingView.swift
-////  AmazonIVSProject
-////
-////  Created by macmini on 02/01/25.
-////
-//
 //import Foundation
-//import UIKit
 //import AmazonIVSBroadcast
+//import React
 //
-//@objc(BroadcastingView)
-//class BroadcastingView: UIView {
-//    private var broadcastSession: IVSBroadcastSession?
+//@objc(BroadcastViewManager)
+//class BroadcastViewManager: RCTViewManager {
+//    override func view() -> UIView! {
+//        return BroadcastView()
+//    }
 //    
-//    @objc var streamKey: String = "" // Set from React Native
-//    @objc var ingestEndpoint: String = "" // Set from React Native
+//    override static func requiresMainQueueSetup() -> Bool {
+//        return true
+//    }
+//}
+//
+//class BroadcastView: UIView {
+//    private var deviceDiscovery = IVSDeviceDiscovery()
+//    private var broadcastSession: IVSBroadcastSession?
+//    private var localCamera: IVSCamera?
+//    private var localMicrophone: IVSMicrophone?
+//    private var broadcastDelegate: BroadcastDelegate?
+//    
+//    private var isBroadcasting: Bool = false {
+//        didSet {
+//            // Notify React Native of broadcasting state change
+//            if let onBroadcastStateChange = onBroadcastStateChange {
+//                onBroadcastStateChange(["isBroadcasting": isBroadcasting])
+//            }
+//        }
+//    }
+//    
+//    @objc var onBroadcastStateChange: RCTDirectEventBlock?
 //    
 //    override init(frame: CGRect) {
 //        super.init(frame: frame)
-//        setupBroadcastSession()
+//        setupBroadcast()
 //    }
 //    
 //    required init?(coder: NSCoder) {
 //        super.init(coder: coder)
-//        setupBroadcastSession()
+//        setupBroadcast()
+//    }
+//    
+//    private func setupBroadcast() {
+//        broadcastDelegate = BroadcastDelegate()
+//        setupCamera()
+//    }
+//    
+//    private func setupCamera() {
+//        #if !targetEnvironment(simulator)
+//        let devices = deviceDiscovery.listLocalDevices()
+//        
+//        // Setup Camera
+//        if let camera = devices.compactMap({ $0 as? IVSCamera }).first {
+//            if let cameraSource = camera.listAvailableInputSources().first(where: { $0.position == .front }) {
+//                camera.setPreferredInputSource(cameraSource) { [weak self] error in
+//                    if let error = error {
+//                        print("Camera setup error: \(error)")
+//                    } else {
+//                        self?.localCamera = camera
+//                        self?.setupBroadcastSession()
+//                    }
+//                }
+//            }
+//        }
+//        
+//        // Setup Microphone
+//        if let microphone = devices.compactMap({ $0 as? IVSMicrophone }).first {
+//            // Configure audio settings using IVSStageAudioManager
+//            let audioManager = IVSStageAudioManager.shared
+//            audioManager.echoCancellation = .enabled
+//            audioManager.noiseReduction = .enabled
+//            self.localMicrophone = microphone
+//        }
+//        #endif
 //    }
 //    
 //    private func setupBroadcastSession() {
-//        guard let config = IVSBroadcastSessionConfiguration.makeDefault() else {
-//            print("Failed to create default configuration")
-//            return
-//        }
-//        
-//        config.video.bitrate = 3000000
-//        config.video.width = 1280
-//        config.video.height = 720
-//        config.video.targetFrameRate = 30
-//        config.audio.bitrate = 128000
-//        
 //        do {
-//            broadcastSession = try IVSBroadcastSession(configuration: config, delegate: nil)
+//            let config = IVSPresets.configurations().standardPortrait()
+//            broadcastSession = try IVSBroadcastSession(configuration: config,
+//                                                     descriptors: nil,
+//                                                     delegate: broadcastDelegate)
 //            
-//            let camera = try broadcastSession?.addVideoDevice(IVSBroadcastSessionDevicePosition.front)
-//            let microphone = try broadcastSession?.addAudioDevice()
-//            
-//            camera?.setAspectMode(.fit) // Adjust to fit the upper part of the screen
-//            
-//            // Start broadcasting
-//            if !streamKey.isEmpty, !ingestEndpoint.isEmpty {
-//                try broadcastSession?.start(with: ingestEndpoint, streamKey: streamKey)
-//                print("Broadcast started successfully")
+//            if let camera = localCamera {
+//                try broadcastSession?.attach(camera, toSlotWithName: "camera")
 //            }
+//            
+//            if let microphone = localMicrophone {
+//                try broadcastSession?.attach(microphone, toSlotWithName: "microphone")
+//            }
+//            
 //        } catch {
-//            print("Failed to start broadcasting: \(error.localizedDescription)")
+//            print("Broadcast session setup error: \(error)")
 //        }
 //    }
 //    
-//    func stopBroadcasting() {
+//    @objc func startBroadcast(_ streamURL: String, streamKey: String) {
+//        guard let url = URL(string: streamURL) else { return }
+//        
+//        do {
+//            try broadcastSession?.start(with: url, streamKey: streamKey)
+//            isBroadcasting = true
+//        } catch {
+//            print("Start broadcast error: \(error)")
+//        }
+//    }
+//    
+//    @objc func stopBroadcast() {
 //        broadcastSession?.stop()
-//        print("Broadcast stopped")
+//        isBroadcasting = false
+//    }
+//    
+//    @objc func switchCamera() {
+//        guard let camera = localCamera else { return }
+//        
+//        let currentPosition = camera.descriptor().position
+//        let newPosition: IVSDevicePosition = currentPosition == .front ? .back : .front
+//        
+//        if let newSource = camera.listAvailableInputSources().first(where: { $0.position == newPosition }) {
+//            camera.setPreferredInputSource(newSource) { error in
+//                if let error = error {
+//                    print("Camera switch error: \(error)")
+//                }
+//            }
+//        }
 //    }
 //}

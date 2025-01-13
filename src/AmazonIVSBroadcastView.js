@@ -1,30 +1,43 @@
-import React, { useRef, useEffect } from 'react';
-import { requireNativeComponent, UIManager, findNodeHandle } from 'react-native';
-
+import React, { useEffect } from 'react';
+import { Button, NativeModules, requireNativeComponent } from 'react-native';
+import { Dimensions } from 'react-native';
 const NativeBroadcastView = requireNativeComponent('AmazonIVSBroadcastView');
+// const { AmazonIVSBroadcastViewManager } = NativeModules; 
 
-const AmazonIVSBroadcastView = ({ ingestEndpoint, streamKey }) => {
-    const ref = useRef(null);
+const AmazonIVSBroadcastView = () => {
+    const screenHeight = Dimensions.get('window').height;
 
-    useEffect(() => {
-        return () => {
-            if (ref.current) {
-                UIManager.dispatchViewManagerCommand(
-                    findNodeHandle(ref.current),
-                    UIManager.AmazonIVSBroadcastView.Commands.stopBroadcast,
-                    []
-                );
-            }
-        };
-    }, []);
+    
+    // useEffect(() => {
+    //     console.log("AmazonIVSBroadcastView mounted");
+    // }, []);
+
+    // const createStage = () => {
+    //     // Delay the creation to make sure the view is initialized
+    //     setTimeout(() => {
+    //       AmazonIVSBroadcastViewManager.createStage()
+    //         .then(response => {
+    //           console.log('Stage created successfully:', response);
+    //         })
+    //         .catch(error => {
+    //           console.error('Error creating stage:', error);
+    //         });
+    //     }, 200);  // Adjust the delay (200ms is a good start)
+    //   };
 
     return (
-        <NativeBroadcastView
-            ref={ref}
-            style={{ flex: 1 }}
-            ingestEndpoint={ingestEndpoint}
-            streamKey={streamKey}
+        <>
+        <NativeBroadcastView 
+            style={{ 
+                height: screenHeight / 2,  // Half of the screen height
+                backgroundColor: 'white' 
+            }} 
         />
+        {/* <Button title='Create new stage ' onPress={createStage}/> */}
+        
+        
+        </>
+        
     );
 };
 

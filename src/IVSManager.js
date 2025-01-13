@@ -6,7 +6,7 @@ const { ServerManager } = NativeModules;
 export const createStage = async (userId, username, avatarUrl) => {
   try {
     const response = await ServerManager.createStage(userId, username, avatarUrl);
-    console.log('Stage created successfully:', response);
+    // console.log('Stage created successfully:', response);
     return response;
   } catch (error) {
     console.error('Failed to create stage:', error);
