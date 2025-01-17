@@ -16,8 +16,12 @@
 //@end
 
 
-//#import <React/RCTViewManager.h>
-//
-//@interface RCT_EXTERN_MODULE(AmazonIVSBroadcastViewManager, RCTViewManager)
-//@end
+#import <React/RCTViewManager.h>
+#import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
+
+
+@interface RCT_EXTERN_MODULE(AmazonIVSBroadcastViewManager, RCTViewManager)
+RCT_EXTERN_METHOD(createStageFromReact)
+@end
 

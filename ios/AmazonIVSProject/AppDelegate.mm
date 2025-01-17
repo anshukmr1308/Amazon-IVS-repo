@@ -4,6 +4,7 @@
 #import <React/RCTBridgeModule.h>
 #import <AmazonIVSBroadcast/AmazonIVSBroadcast.h>
 
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
