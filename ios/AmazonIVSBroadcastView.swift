@@ -11,61 +11,61 @@ import AmazonIVSBroadcast
 //
 //@objc(AmazonIVSBroadcastView)
 //class AmazonIVSBroadcastView: UIView {
-//    
+//
 //    private var broadcastSession: IVSBroadcastSession?
 //    private var previewView: UIView?
-//    
+//
 //    @objc var ingestEndpoint: String = "" {
 //        didSet { setupBroadcastSession() }
 //    }
-//    
+//
 //    @objc var streamKey: String = "" {
 //        didSet { setupBroadcastSession() }
 //    }
-//    
+//
 //    override init(frame: CGRect) {
 //        super.init(frame: frame)
 //        setupPreview()
 //    }
-//    
+//
 //    required init?(coder: NSCoder) {
 //        super.init(coder: coder)
 //        setupPreview()
 //    }
-//    
+//
 //    private func setupPreview() {
 //        previewView = UIView(frame: self.bounds)
 //        if let previewView = previewView {
 //            self.addSubview(previewView)
 //        }
 //    }
-//    
+//
 //    private func setupBroadcastSession() {
 //        guard !ingestEndpoint.isEmpty, !streamKey.isEmpty else {
 //            print("Missing ingestEndpoint or streamKey")
 //            return
 //        }
-//        
+//
 //        do {
 //            let config = IVSBroadcastConfiguration()
 //            // Explicitly specify the type for preset
 ////            config.preset = IVSBroadcastPreset.standardPortrait
-//            
+//
 //            broadcastSession = try IVSBroadcastSession(configuration: config, descriptors: nil, delegate: nil)
-//            
+//
 //            if let preview = broadcastSession?.previewView {
 //                let preview = IVSImagePreviewView(frame: self.bounds)
 //                preview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 //                self.addSubview(preview)
 //            }
-//            
+//
 //            try broadcastSession?.start(with: URL(string: ingestEndpoint)!, streamKey: streamKey)
 //            print("Broadcast session started")
 //        } catch {
 //            print("Failed to start IVS Broadcast Session: \(error.localizedDescription)")
 //        }
 //    }
-//  
+//
 //    @objc func stopBroadcast() {
 //        broadcastSession?.stop()
 //        print("Broadcast session stopped")
@@ -107,85 +107,125 @@ import AmazonIVSBroadcast
 //      backgroundColor = .white
 //  }
 
+class BroadcastViewState: ObservableObject {
+    static let shared = BroadcastViewState() // Singleton instance
+    
+    @Published var isStageListPresent: Bool = false
+    @Published var isLoading: Bool = false
+    @Published var isStagePresent: Bool = false
+    @Published var isSetupPresent: Bool = true
+    @Published var isWelcomePresent: Bool = true
+    @Published var isCameraPreviewPresent: Bool = false
+    @Published var selectedStage: StageDetails?
+    @Published var stages: [StageDetails] = []
+}
+
 struct AmazonIVSBroadcastView: View {
     @ObservedObject var services = ServicesManager()
-    @State var isWelcomePresent: Bool = true
-    @State var isSetupPresent: Bool = true
-    @State var isStageListPresent: Bool = false
-    @State var isStagePresent: Bool = false
-    @State var isLoading: Bool = false
-  @State var username: String = "Vijay"
-  @State var avatarUrl: String = "https://d39ii5l128t5ul.cloudfront.net/assets/animals_square/bear.png"
-  @State var joinToken: String = ""
-  @State var stages: [StageDetails] = []
-  @State var isCameraPreviewPresent: Bool = false
-  @State var selectedStage: StageDetails?
+  @ObservedObject var viewState: BroadcastViewState
+//    @State var isWelcomePresent: Bool = true
+//    @State var isSetupPresent: Bool = true
+//    @State var isStageListPresent: Bool = false
+////    @State var isStagePresent: Bool = false
+//    @State var isLoading: Bool = false
+//  @State var username: String = "Vijay"
+//  @State var avatarUrl: String = "https://d39ii5l128t5ul.cloudfront.net/assets/animals_square/bear.png"
+//  @State var joinToken: String = ""
+//  @State var stages: [StageDetails] = []
+//  @State var isCameraPreviewPresent: Bool = false
+//  @State var selectedStage: StageDetails?
+//  @State private var isStagePresent: Bool = false
+//  @State private var isSetupPresent: Bool = true
+//  @State private var isWelcomePresent: Bool = true
+//  @Binding var isStagePresentFromReact: Bool
+//
   
+//  @StateObject private var viewState = ViewState()
+     
+     // Move state to a separate ObservableObject for better management
+//     class ViewState: ObservableObject {
+//         @Published var isStageListPresent: Bool = false
+//         @Published var isLoading: Bool = false
+//         @Published var isStagePresent: Bool = false
+//         @Published var isSetupPresent: Bool = true
+//         @Published var isWelcomePresent: Bool = true
+//         @Published var isCameraPreviewPresent: Bool = false
+//         @Published var selectedStage: StageDetails?
+//         @Published var stages: [StageDetails] = []
+//     }
+  
+  var username: String = "Vijay"
+     var avatarUrl: String = "https://d39ii5l128t5ul.cloudfront.net/assets/animals_square/bear.png"
+     var joinToken: String = ""
+  
+  init(viewState: BroadcastViewState = BroadcastViewState.shared) {
+          self.viewState = viewState
+      }
   
     var body: some View {
         ZStack(alignment: .top) {
             Color("Background")
                 .edgesIgnoringSafeArea(.all)
 
-            if isStagePresent, let viewModel = services.viewModel {
-                StageView(viewModel: viewModel,
-                          chatModel: services.chatModel,
-                          isPresent: $isStagePresent,
-                          isLoading: $isLoading,
-                          backAction: backAction)
-                    .transition(.slide)
-            }
+          if viewState.isStagePresent, let viewModel = services.viewModel {
+                         StageView(viewModel: viewModel,
+                                  chatModel: services.chatModel,
+                                  isPresent: $viewState.isStagePresent,
+                                  isLoading: $viewState.isLoading,
+                                  backAction: backAction)
+                             .transition(.slide)
+                     }
           
-          if isSetupPresent {
-              SetupView(isPresent: $isSetupPresent,
-                        isLoading: $isLoading,
-                        isStageListPresent: $isStageListPresent,
-                        onComplete: { (user, token) in
-                  services.viewModel?.clearNotifications()
-                  services.user = user
-
-                  if user.isHost {
-                      services.viewModel?.createStage(user: user) { success in
-                          if success {
-                              services.viewModel?.initializeStage(onComplete: {
-                                  services.viewModel?.joinAsHost() { success in
-                                      if success {
-                                          presentStage()
-                                      }
-                                      isLoading = false
-                                  }
-                              })
-                          } else {
-                              isLoading = false
-                          }
-                      }
-                  } else if let token = token {
-                      services.viewModel?.initializeStage(onComplete: {
-                          services.viewModel?.joinAsParticipant(token) {
-                              presentStage()
-                              isLoading = false
-                          }
-                      })
-                  }
-              })
-          }
-
-//            if isSetupPresent {
-//              ZStack(alignment: .topLeading) {
-//                  Color("Background")
-//                      .edgesIgnoringSafeArea(.all)
+//          if isSetupPresent {
+//              SetupView(isPresent: $isSetupPresent,
+//                        isLoading: $isLoading,
+//                        isStageListPresent: $isStageListPresent,
+//                        onComplete: { (user, token) in
+//                  services.viewModel?.clearNotifications()
+//                  services.user = user
 //
-//                  VStack(alignment: .leading, spacing: 0) {
-//                      Text("Stages")
-//                          .modifier(TitleLeading())
-//
-//                      if !(stages.first?.stageId.isEmpty ?? false) {
-//                          Text("All stages")
-//                              .modifier(TableHeader())
+//                  if user.isHost {
+//                      services.viewModel?.createStage(user: user) { success in
+//                          if success {
+//                              services.viewModel?.initializeStage(onComplete: {
+//                                  services.viewModel?.joinAsHost() { success in
+//                                      if success {
+//                                          presentStage()
+//                                      }
+//                                      isLoading = false
+//                                  }
+//                              })
+//                          } else {
+//                              isLoading = false
+//                          }
 //                      }
-//
-//                      Spacer()
-//
+//                  } else if let token = token {
+//                      services.viewModel?.initializeStage(onComplete: {
+//                          services.viewModel?.joinAsParticipant(token) {
+//                              presentStage()
+//                              isLoading = false
+//                          }
+//                      })
+//                  }
+//              })
+//          }
+
+          if viewState.isSetupPresent {
+              ZStack(alignment: .topLeading) {
+                  Color("Background")
+                      .edgesIgnoringSafeArea(.all)
+
+                  VStack(alignment: .leading, spacing: 0) {
+                      Text("Stages")
+                          .modifier(TitleLeading())
+
+                    if !(viewState.stages.first?.stageId.isEmpty ?? false) {
+                          Text("All stages")
+                              .modifier(TableHeader())
+                      }
+
+                      Spacer()
+
 //                      Button(action: {
 //                        createStage()
 //                      }) {
@@ -193,29 +233,30 @@ struct AmazonIVSBroadcastView: View {
 //                              .modifier(PrimaryButton())
 //                      }
 //                      .padding(.top, 5)
-//                  }
-//
-//                  if isCameraPreviewPresent, let viewModel = services.viewModel {
-//                      JoinPreviewView(viewModel: viewModel, isPresent: $isCameraPreviewPresent, isLoading: $isLoading) {
-//                          guard let stage = selectedStage else {
-//                              print("❌ Can't join - no stage selected")
-//                              return
-//                          }
-//                        isStageListPresent = false
-//                        joinStage(stage)
-//                      }
-//                  }
-//              }
-//              .onAppear {
-//                  isLoading = true
-//                  DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                      services.viewModel?.getAllStages(initial: true) { allStages in
-//                          stages = allStages
-//                          isLoading = false
-//                      }
-//                  }
-//              }
-//          }
+                  }
+
+                if viewState.isCameraPreviewPresent, let viewModel = services.viewModel {
+                      JoinPreviewView(viewModel: viewModel, isPresent:
+                                        $viewState.isCameraPreviewPresent, isLoading: $viewState.isLoading) {
+                        guard let stage = viewState.selectedStage else {
+                              print("❌ Can't join - no stage selected")
+                              return
+                          }
+                        viewState.isStageListPresent = false
+                        joinStage(stage)
+                      }
+                  }
+              }
+              .onAppear {
+                viewState.isLoading = true
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                      services.viewModel?.getAllStages(initial: true) { allStages in
+                        viewState.stages = allStages
+                        viewState.isLoading = false
+                      }
+                  }
+              }
+          }
 
 
 
@@ -223,20 +264,22 @@ struct AmazonIVSBroadcastView: View {
                 NotificationsView(viewModel: viewModel)
             }
 
-            if isLoading {
+          if viewState.isLoading {
                 ActivityIndicator()
             }
         }
         .environmentObject(services)
     }
   
-  private func createStage() {
-      isLoading = true
-    handleSetupCompletion(user: updateUser(true), token: nil)
-  }
+  
+  public func createStage() {
+         print("createStage called in SwiftUI view")
+         viewState.isLoading = true
+         handleSetupCompletion(user: updateUser(true), token: nil)
+     }
 
   private func joinStage(_ stage: StageDetails) {
-      isLoading = true
+    viewState.isLoading = true
       print("ℹ joining stage: \(stage.stageId)")
 
       services.viewModel?.getToken(for: stage) { stageJoinResponse, error in
@@ -248,7 +291,7 @@ struct AmazonIVSBroadcastView: View {
           } else {
               print("❌ Could not join stage - missing stage join token: \(error ?? "\(String(describing: stageJoinResponse))")")
           }
-          isLoading = false
+        viewState.isLoading = false
       }
   }
 
@@ -262,49 +305,58 @@ struct AmazonIVSBroadcastView: View {
       return services.user
   }
 
-    private func handleSetupCompletion(user: User, token: String?) {
-        services.viewModel?.clearNotifications()
-        services.user = user
+  private func handleSetupCompletion(user: User, token: String?) {
+          services.viewModel?.clearNotifications()
+          services.user = user
 
-        if user.isHost {
-            services.viewModel?.createStage(user: user) { success in
-                if success {
-                    services.viewModel?.initializeStage {
-                        services.viewModel?.joinAsHost { success in
-                            if success {
-                                presentStage()
-                            }
-                            isLoading = false
-                        }
-                    }
-                } else {
-                    isLoading = false
-                }
-            }
-        } else if let token = token {
-            services.viewModel?.initializeStage {
-                services.viewModel?.joinAsParticipant(token) {
-                    presentStage()
-                    isLoading = false
-                }
-            }
-        }
-    }
+          if user.isHost {
+              services.viewModel?.createStage(user: user) { success in
+                  if success {
+                      services.viewModel?.initializeStage {
+                          services.viewModel?.joinAsHost { success in
+                              if success {
+                                  presentStage()
+                              }
+                            viewState.isLoading = false
+                          }
+                      }
+                  } else {
+                    viewState.isLoading = false
+                  }
+              }
+          } else if let token = token {
+              services.viewModel?.initializeStage {
+                  services.viewModel?.joinAsParticipant(token) {
+                      presentStage()
+                    viewState.isLoading = false
+                  }
+              }
+          }
+      }
 
-    private func presentStage() {
-        withAnimation {
-            isStagePresent = true
-        }
-        isSetupPresent = false
-        isWelcomePresent = false
-    }
-
+  private func presentStage() {
+         print("ℹ Before Animation: isStagePresent = \(viewState.isStagePresent)")
+         
+         DispatchQueue.main.async {
+             withAnimation {
+                 viewState.isSetupPresent = false
+                 viewState.isWelcomePresent = false
+                 viewState.isStagePresent = true
+             }
+             
+             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                 print("ℹ After Animation: isStagePresent = \(viewState.isStagePresent)")
+             }
+         }
+     }
+  
+  
     private func backAction() {
-        isSetupPresent = true
-        isStageListPresent = true
+      viewState.isSetupPresent = true
+      viewState.isStageListPresent = true
         withAnimation {
-            isStagePresent = false
+          viewState.isStagePresent = false
         }
-        isLoading = false
+      viewState.isLoading = false
     }
 }

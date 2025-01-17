@@ -39,63 +39,103 @@ import React
 
 @objc(AmazonIVSBroadcastViewManager)
 class AmazonIVSBroadcastViewManager: RCTViewManager {
-  override func view() -> UIView! {
-         let containerView = UIView()
-         containerView.isUserInteractionEnabled = true
-         
-         let hostingWrapper = AmazonIVSBroadcastViewWrapper()
-         hostingWrapper.translatesAutoresizingMaskIntoConstraints = false
-         containerView.addSubview(hostingWrapper)
+    private var broadcastViewWrapper: AmazonIVSBroadcastViewWrapper?
 
-         NSLayoutConstraint.activate([
-             hostingWrapper.topAnchor.constraint(equalTo: containerView.topAnchor),
-             hostingWrapper.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-             hostingWrapper.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-             hostingWrapper.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-         ])
+    override func view() -> UIView! {
+        print("Initializing the view in AmazonIVSBroadcastViewManager")
+        
+        let containerView = UIView()
+        containerView.isUserInteractionEnabled = true
 
-         return containerView
-     }
+        // Initialize the wrapper
+        let wrapper = AmazonIVSBroadcastViewWrapper()
+        wrapper.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(wrapper)
+
+        NSLayoutConstraint.activate([
+            wrapper.topAnchor.constraint(equalTo: containerView.topAnchor),
+            wrapper.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            wrapper.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            wrapper.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+        ])
+
+        self.broadcastViewWrapper = wrapper // Assign the wrapper to the property
+        print("broadcastViewWrapper is initialized")
+        return containerView
+    }
+
     override static func requiresMainQueueSetup() -> Bool {
         return true
+    }
+
+    @objc func createStageFromReact() {
+        DispatchQueue.main.async { [weak self] in
+            print("React Native Button Clicked")
+            
+            // Lazy initialization in case broadcastViewWrapper is nil
+            if self?.broadcastViewWrapper == nil {
+                print("broadcastViewWrapper is nil; initializing...")
+                self?.broadcastViewWrapper = AmazonIVSBroadcastViewWrapper()
+            }
+            
+            guard let broadcastViewWrapper = self?.broadcastViewWrapper else {
+                print("Error: broadcastViewWrapper could not be initialized")
+                return
+            }
+
+            print("Calling createStage on broadcastViewWrapper")
+            broadcastViewWrapper.createStage()
+        }
     }
 }
 
 class AmazonIVSBroadcastViewWrapper: UIView {
     private var hostingController: UIHostingController<AmazonIVSBroadcastView>?
+  private let viewState = BroadcastViewState.shared
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        print("AmazonIVSBroadcastViewWrapper initialized with frame")
         setupView()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        print("AmazonIVSBroadcastViewWrapper initialized with coder")
         setupView()
     }
 
-  private func setupView() {
-      let broadcastView = AmazonIVSBroadcastView()
-      hostingController = UIHostingController(rootView: broadcastView)
+    private func setupView() {
+        print("Setting up the hosting controller in AmazonIVSBroadcastViewWrapper")
+        let broadcastView = AmazonIVSBroadcastView()
+        let hostingController = UIHostingController(rootView: broadcastView)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        hostingController.view.backgroundColor = .clear
+        hostingController.view.isUserInteractionEnabled = true
 
-      if let hostingView = hostingController?.view {
-          hostingView.translatesAutoresizingMaskIntoConstraints = false
-          hostingView.backgroundColor = .clear // Avoid blocking touches
-          hostingView.isUserInteractionEnabled = true
+        self.hostingController = hostingController
+        if let hostingView = hostingController.view {
+            self.addSubview(hostingView)
 
-          addSubview(hostingView)
+            NSLayoutConstraint.activate([
+                hostingView.topAnchor.constraint(equalTo: self.topAnchor),
+                hostingView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+                hostingView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+                hostingView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            ])
+        }
+    }
 
-          // Ensure the hostingController manages touches properly
-          hostingController?.view.isMultipleTouchEnabled = true
-
-          NSLayoutConstraint.activate([
-              hostingView.topAnchor.constraint(equalTo: topAnchor),
-              hostingView.leadingAnchor.constraint(equalTo: leadingAnchor),
-              hostingView.trailingAnchor.constraint(equalTo: trailingAnchor),
-              hostingView.bottomAnchor.constraint(equalTo: bottomAnchor),
-          ])
+  func createStage() {
+          print("createStage called in broadcastViewWrapper")
+          DispatchQueue.main.async { [weak self] in
+              guard let hostingController = self?.hostingController else {
+                  print("Error: No hosting controller found")
+                  return
+              }
+              hostingController.rootView.createStage()
+          }
       }
-
-      isUserInteractionEnabled = true // Enable interaction for the wrapper
-  }
 }
+
+

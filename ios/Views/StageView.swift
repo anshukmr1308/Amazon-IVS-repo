@@ -15,6 +15,7 @@ struct StageView: View {
     @Binding var isPresent: Bool
     @Binding var isLoading: Bool
     var backAction: () -> Void
+  @StateObject private var viewState = BroadcastViewState.shared
 
     @State var isControlsExpanded: Bool = false
     @State var isManageParticipantsPresent: Bool = false
