@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Button,
+  requireNativeComponent,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -22,12 +23,14 @@ import {
   Colors,
   Header,
 } from 'react-native/Libraries/NewAppScreen';
-import checkPermissions from './src/checkPermission';
+// import checkPermissions from './src/checkPermission';
 import { createStage } from './src/IVSManager';
 // import BroadcastingView from './src/broadcastingView';
 import AmazonIVSBroadcastView from './src/AmazonIVSBroadcastView';
 
-const App = ()=> {
+// const SwiftView = requireNativeComponent('MultihostViewController');
+
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [broadcastData, setBroadcastData] = useState(null);
 
@@ -35,14 +38,14 @@ const App = ()=> {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  useEffect(() => {
-    checkPermissions()
-  }, [])
+  // useEffect(() => {
+  //   checkPermissions()
+  // }, [])
   const handleCreateStage = async () => {
     try {
       const response = await createStage('user123', 'John Doe', 'https://d39ii5l128t5ul.cloudfront.net/assets/animals_square/bear.png');
       setBroadcastData(response)
-      
+
       Alert.alert('Success', `Stage Created: ${JSON.stringify(response)}`);
     } catch (error) {
       Alert.alert('Error', error);
@@ -51,16 +54,14 @@ const App = ()=> {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <View style={{ height: 200, width: 200 }}>
-      {broadcastData ? (
-                <AmazonIVSBroadcastView
-                    ingestEndpoint={broadcastData?.channel.ingestEndpoint}
-                    streamKey={broadcastData?.channel.streamKey}
-                />
-            ) : (
-              <Button title='Create new stage'  onPress={handleCreateStage}/>
-            )}
-        
+      <View >
+      {/* <SwiftView style={styles.nativeView} /> */}
+        {/* {broadcastData && ( */}
+          <AmazonIVSBroadcastView />
+        {/* )} */}
+        {/* <Button title='Create new stage' onPress={handleCreateStage} /> */}
+        {/* )} */}
+
       </View>
     </SafeAreaView>
   );
@@ -82,6 +83,11 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  nativeView: {
+    width: 200,
+    height: 100,
+    backgroundColor: 'pink'
   },
 });
 

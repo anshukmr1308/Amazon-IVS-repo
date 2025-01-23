@@ -6,7 +6,7 @@ const { ServerManager } = NativeModules;
 export const createStage = async (userId, username, avatarUrl) => {
   try {
     const response = await ServerManager.createStage(userId, username, avatarUrl);
-    console.log('Stage created successfully:', response);
+    // console.log('Stage created successfully:', response);
     return response;
   } catch (error) {
     console.error('Failed to create stage:', error);
@@ -17,11 +17,24 @@ export const createStage = async (userId, username, avatarUrl) => {
 // List Stages
 export const listStages = async () => {
   try {
-    const response = await ServerManager.listStages();
-    console.log('Stages listed successfully:', response);
+    console.log('Starting getAllStages request...');
+    const response = await ServerManager.getAllStages();
+    console.log('Raw response from getAllStages:', response);
+    
+    // Validate response structure
+    if (!response) {
+      throw new Error('No response received from server');
+    }
+    
     return response;
   } catch (error) {
-    console.error('Failed to list stages:', error);
+    console.error('Detailed error in listStages:', {
+      message: error.message,
+      code: error.code,
+      domain: error.domain,
+      name: error.name,
+      stack: error.stack
+    });
     throw error;
   }
 };

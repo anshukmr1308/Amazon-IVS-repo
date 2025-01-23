@@ -1,22 +1,22 @@
-import { NativeModules } from 'react-native';
+// import { NativeModules } from 'react-native';
 
-const { PermissionsManager } = NativeModules;
+// const { PermissionsManager } = NativeModules;
 
-async function checkPermissions() {
-    try {
-        const granted = await PermissionsManager.checkAVPermissions();
-        console.log(granted,'==================');
-        if (granted) {
+// async function checkPermissions() {
+//     try {
+//         const granted = await PermissionsManager.checkAVPermissions();
+//         console.log(granted,'==================');
+//         if (granted) {
            
             
-            // console.log('Permissions granted for both camera and audio.');
-        } else {
-            console.log('Permissions denied.');
-        }
-    } catch (error) {
-        console.error('Error checking permissions:', error);
-    }
-}
+//             // console.log('Permissions granted for both camera and audio.');
+//         } else {
+//             console.log('Permissions denied.');
+//         }
+//     } catch (error) {
+//         console.error('Error checking permissions:', error);
+//     }
+// }
 
-// Call the function
-export default checkPermissions;
+// // Call the function
+// export default checkPermissions;
