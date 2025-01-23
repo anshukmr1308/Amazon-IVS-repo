@@ -87,6 +87,106 @@ class AmazonIVSBroadcastViewManager: RCTViewManager {
             broadcastViewWrapper.createStage()
         }
     }
+  
+  @objc func onClickStageFromReact(_ stage: NSDictionary) {
+      DispatchQueue.main.async { [weak self] in
+          print("React Native onClickStage Called")
+
+          // Safely extract and convert NSDictionary to StageDetails
+          guard
+              let roomId = stage["roomId"] as? String,
+              let channelId = stage["channelId"] as? String,
+              let userAttributesDict = stage["stageAttributes"] as? [String: Any],
+              let username = userAttributesDict["username"] as? String,
+              let avatarUrl = userAttributesDict["avatarUrl"] as? String,
+              let groupId = stage["groupId"] as? String,
+              let stageId = stage["stageId"] as? String
+          else {
+              print("Error: Invalid stage details provided")
+              return
+          }
+
+          let userAttributes = UserAttributes(username: username, avatarUrl: avatarUrl)
+          let stageDetails = StageDetails(
+              roomId: roomId,
+              channelId: channelId,
+              userAttributes: userAttributes,
+              groupId: groupId,
+              stageId: stageId
+          )
+
+          if self?.broadcastViewWrapper == nil {
+              print("broadcastViewWrapper is nil; initializing...")
+              self?.broadcastViewWrapper = AmazonIVSBroadcastViewWrapper()
+          }
+
+          guard let broadcastViewWrapper = self?.broadcastViewWrapper else {
+              print("Error: broadcastViewWrapper could not be initialized")
+              return
+          }
+
+          print("Calling onClickStage on broadcastViewWrapper")
+          broadcastViewWrapper.onClickStage(stage: stageDetails)
+      }
+  }
+  
+  @objc func handleCancelFromReact() {
+         DispatchQueue.main.async { [weak self] in
+             print("React Native handleCancel Called")
+             
+             if self?.broadcastViewWrapper == nil {
+                 print("broadcastViewWrapper is nil; initializing...")
+                 self?.broadcastViewWrapper = AmazonIVSBroadcastViewWrapper()
+             }
+             
+             guard let broadcastViewWrapper = self?.broadcastViewWrapper else {
+                 print("Error: broadcastViewWrapper could not be initialized")
+                 return
+             }
+
+             print("Calling handleCancel on broadcastViewWrapper")
+             broadcastViewWrapper.handleCancel()
+         }
+     }
+
+     @objc func handleJoinFromReact() {
+         DispatchQueue.main.async { [weak self] in
+             print("React Native handleJoin Called")
+             
+             if self?.broadcastViewWrapper == nil {
+                 print("broadcastViewWrapper is nil; initializing...")
+                 self?.broadcastViewWrapper = AmazonIVSBroadcastViewWrapper()
+             }
+             
+             guard let broadcastViewWrapper = self?.broadcastViewWrapper else {
+                 print("Error: broadcastViewWrapper could not be initialized")
+                 return
+             }
+
+             print("Calling handleJoin on broadcastViewWrapper")
+             broadcastViewWrapper.handleJoin()
+         }
+     }
+  
+  @objc func sendMessageFromReact(_ message: String) {
+          DispatchQueue.main.async { [weak self] in
+              print("React Native sendMessage Called with message:", message)
+              
+              if self?.broadcastViewWrapper == nil {
+                  print("broadcastViewWrapper is nil; initializing...")
+                  self?.broadcastViewWrapper = AmazonIVSBroadcastViewWrapper()
+              }
+              
+              guard let broadcastViewWrapper = self?.broadcastViewWrapper else {
+                  print("Error: broadcastViewWrapper could not be initialized")
+                  return
+              }
+
+              print("Calling sendMessage on broadcastViewWrapper")
+              broadcastViewWrapper.sendMessage(message)
+          }
+      }
+
 }
 
 class AmazonIVSBroadcastViewWrapper: UIView {
@@ -136,6 +236,51 @@ class AmazonIVSBroadcastViewWrapper: UIView {
               hostingController.rootView.createStage()
           }
       }
+  
+  func onClickStage(stage: StageDetails) {
+      print("onClickStage called in broadcastViewWrapper")
+      DispatchQueue.main.async { [weak self] in
+          guard let hostingController = self?.hostingController else {
+              print("Error: No hosting controller found")
+              return
+          }
+          hostingController.rootView.onClickStage(stage: stage)
+      }
+  }
+  
+  func handleCancel() {
+          print("handleCancel called in broadcastViewWrapper")
+          DispatchQueue.main.async { [weak self] in
+              guard let hostingController = self?.hostingController else {
+                  print("Error: No hosting controller found")
+                  return
+              }
+              hostingController.rootView.handleCancel()
+          }
+      }
+
+      func handleJoin() {
+          print("handleJoin called in broadcastViewWrapper")
+          DispatchQueue.main.async { [weak self] in
+              guard let hostingController = self?.hostingController else {
+                  print("Error: No hosting controller found")
+                  return
+              }
+              hostingController.rootView.handleJoin()
+          }
+      }
+  
+  func sendMessage(_ message: String) {
+         print("sendMessage called in broadcastViewWrapper")
+         DispatchQueue.main.async { [weak self] in
+             guard let hostingController = self?.hostingController else {
+                 print("Error: No hosting controller found")
+                 return
+             }
+             hostingController.rootView.sendMessage(message)
+         }
+     }
+  
 }
 
 

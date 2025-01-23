@@ -12,7 +12,7 @@ import AmazonIVSChatMessaging
 
 struct ChatMessagesView: View {
     @ObservedObject var chatModel: ChatModel
-
+ 
     var body: some View {
         ZStack {
             ScrollViewReader { proxy in

@@ -66,6 +66,8 @@
 		9AD40BC02D2C160400C3DA31 /* JoinPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD40BBF2D2C160400C3DA31 /* JoinPreviewView.swift */; };
 		9AD40BC42D2C18EA00C3DA31 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD40BC32D2C18EA00C3DA31 /* RemoteImageView.swift */; };
 		9AD40BC62D2C1DCA00C3DA31 /* ControlButtonsDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD40BC52D2C1DCA00C3DA31 /* ControlButtonsDrawer.swift */; };
+		9AD6BA562D3EF1360046CFE9 /* BroadcastEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD6BA552D3EF1360046CFE9 /* BroadcastEventEmitter.swift */; };
+		9AD6BA582D3EF2140046CFE9 /* BroadcastEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD6BA572D3EF2140046CFE9 /* BroadcastEventEmitter.m */; };
 		9AEE15912D2B321900BED7E1 /* ServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE15902D2B321900BED7E1 /* ServicesManager.swift */; };
 		9AEE15932D2B360100BED7E1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE15922D2B360100BED7E1 /* User.swift */; };
 		9AEE15952D2B362200BED7E1 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE15942D2B362200BED7E1 /* ChatModel.swift */; };
@@ -153,6 +155,8 @@
 		9AD40BBF2D2C160400C3DA31 /* JoinPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPreviewView.swift; sourceTree = "<group>"; };
 		9AD40BC32D2C18EA00C3DA31 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 		9AD40BC52D2C1DCA00C3DA31 /* ControlButtonsDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButtonsDrawer.swift; sourceTree = "<group>"; };
+		9AD6BA552D3EF1360046CFE9 /* BroadcastEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastEventEmitter.swift; sourceTree = "<group>"; };
+		9AD6BA572D3EF2140046CFE9 /* BroadcastEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BroadcastEventEmitter.m; sourceTree = "<group>"; };
 		9AEE15902D2B321900BED7E1 /* ServicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesManager.swift; sourceTree = "<group>"; };
 		9AEE15922D2B360100BED7E1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9AEE15942D2B362200BED7E1 /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
@@ -232,6 +236,8 @@
 				9AEE159A2D2B389700BED7E1 /* BroadcastDelegate.swift */,
 				9AD40BBD2D2C124B00C3DA31 /* Constants.swift */,
 				9AC7BD802D2D70DA007C25FF /* ServerManagerDelegate.swift */,
+				9AD6BA552D3EF1360046CFE9 /* BroadcastEventEmitter.swift */,
+				9AD6BA572D3EF2140046CFE9 /* BroadcastEventEmitter.m */,
 			);
 			name = AmazonIVSProject;
 			sourceTree = "<group>";
@@ -632,6 +638,7 @@
 				9A9B83DE2D2F046E00BB0203 /* BottomSheetView.swift in Sources */,
 				9A9E405D2D277A6F00965431 /* BroadcastManager.m in Sources */,
 				9A9B83E02D2F057700BB0203 /* SetupView.swift in Sources */,
+				9AD6BA562D3EF1360046CFE9 /* BroadcastEventEmitter.swift in Sources */,
 				9AC907CE2D2ECA1D00E69B2B /* ChatView.swift in Sources */,
 				9A9B83E22D2F059C00BB0203 /* StageListView.swift in Sources */,
 				9AC8354D2D2FB0FB009CE6C5 /* WelcomeView.swift in Sources */,
@@ -662,6 +669,7 @@
 				9A9B83D22D2F030800BB0203 /* IVSImagePreviewViewWrapper.swift in Sources */,
 				9A9B83EE2D2F0F3800BB0203 /* PermissionManager.swift in Sources */,
 				9A4268AD2D257E1E003E127C /* ServerManager.swift in Sources */,
+				9AD6BA582D3EF2140046CFE9 /* BroadcastEventEmitter.m in Sources */,
 				9AEE15972D2B366900BED7E1 /* StageViewModel.swift in Sources */,
 				9A9B83E62D2F060000BB0203 /* Notification.swift in Sources */,
 			);

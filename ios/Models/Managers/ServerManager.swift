@@ -85,19 +85,25 @@ class ServerManager: NSObject, ObservableObject {
   }
     
     // MARK: - Get All Stages
-    @objc func getAllStages(
-        _ resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock
-    ) {
-        sendRequest(method: "POST", endpoint: "list") { result in
-            switch result {
-            case .success(let jsonResponse):
-                resolve(jsonResponse)
-            case .failure(let error):
-                reject("Error", error.localizedDescription, nil)
-            }
-        }
-    }
+  @objc func getAllStages(
+      _ resolve: @escaping RCTPromiseResolveBlock,
+      reject: @escaping RCTPromiseRejectBlock
+  ) {
+      print("📞 getAllStages called")
+      sendRequest(method: "POST", endpoint: "list") { result in
+          switch result {
+          case .success(let jsonResponse):
+              print("✅ Successfully got stages response: \(jsonResponse)")
+              resolve(jsonResponse)
+          case .failure(let error):
+              print("❌ Failed to get stages: \(error.localizedDescription)")
+              if let nsError = error as NSError? {
+                  print("❌ Error details - Domain: \(nsError.domain), Code: \(nsError.code), UserInfo: \(nsError.userInfo)")
+              }
+              reject("Error", error.localizedDescription, error)
+          }
+      }
+  }
     
     // MARK: - Join Stage
     @objc func joinStage(
@@ -171,59 +177,92 @@ class ServerManager: NSObject, ObservableObject {
     }
     
     // MARK: - Common Send Request Method
-    private func sendRequest(
-        method: String,
-        endpoint: String,
-        body: [String: Any]? = nil,
-        completion: @escaping (Result<[String: Any], Error>) -> Void
-    ) {
-        guard let url = URL(string: "\(apiUrl)/\(endpoint)") else {
-            completion(.failure(NSError(domain: "InvalidURL", code: 400, userInfo: nil)))
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.timeoutInterval = 10
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        
-        if let body = body {
-            request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(NSError(domain: "InvalidResponse", code: 500, userInfo: nil)))
-                return
-            }
-            
-            guard (200...299).contains(httpResponse.statusCode) else {
-                let statusError = NSError(domain: "HTTPError", code: httpResponse.statusCode, userInfo: nil)
-                completion(.failure(statusError))
-                return
-            }
-            
-            guard let data = data else {
-                let noDataError = NSError(domain: "NoData", code: 204, userInfo: nil)
-                completion(.failure(noDataError))
-                return
-            }
-            
-            do {
-                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    completion(.success(jsonResponse))
-                } else {
-                    let parseError = NSError(domain: "ParseError", code: 500, userInfo: nil)
-                    completion(.failure(parseError))
-                }
-            } catch {
-                completion(.failure(error))
-            }
-        }.resume()
-    }
+  private func sendRequest(
+      method: String,
+      endpoint: String,
+      body: [String: Any]? = nil,
+      completion: @escaping (Result<[String: Any], Error>) -> Void
+  ) {
+      guard let url = URL(string: "\(apiUrl)/\(endpoint)") else {
+          print("❌ Invalid URL: \(apiUrl)/\(endpoint)")
+          completion(.failure(NSError(domain: "InvalidURL", code: 400, userInfo: nil)))
+          return
+      }
+      
+      print("📡 Sending request to: \(url.absoluteString)")
+      
+      var request = URLRequest(url: url)
+      request.httpMethod = method
+      request.timeoutInterval = 10
+      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+      
+      if let body = body {
+          do {
+              let jsonData = try JSONSerialization.data(withJSONObject: body)
+              request.httpBody = jsonData
+              print("📤 Request body: \(body)")
+          } catch {
+              print("❌ Failed to serialize request body: \(error)")
+              completion(.failure(error))
+              return
+          }
+      }
+      
+      URLSession.shared.dataTask(with: request) { data, response, error in
+          if let error = error {
+              print("❌ Network error: \(error.localizedDescription)")
+              completion(.failure(error))
+              return
+          }
+          
+          guard let httpResponse = response as? HTTPURLResponse else {
+              print("❌ Invalid response type")
+              completion(.failure(NSError(domain: "InvalidResponse", code: 500, userInfo: nil)))
+              return
+          }
+          
+          print("📥 Response status code: \(httpResponse.statusCode)")
+          
+          guard let data = data else {
+              print("❌ No data received")
+              completion(.failure(NSError(domain: "NoData", code: 204, userInfo: nil)))
+              return
+          }
+          
+          // Print raw response data as string
+          if let dataString = String(data: data, encoding: .utf8) {
+              print("📦 Raw response data: \(dataString)")
+          }
+          
+          do {
+              // Try parsing with JSONSerialization
+              if let jsonResponse = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                  print("✅ Successfully parsed JSON response: \(jsonResponse)")
+                  completion(.success(jsonResponse))
+              } else if let jsonArray = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
+                  // Handle array response
+                  print("✅ Successfully parsed JSON array response")
+                  let wrappedResponse: [String: Any] = ["stages": jsonArray]
+                  completion(.success(wrappedResponse))
+              } else {
+                  print("❌ Response is not a dictionary or array")
+                  // Try to print the actual type we received
+                  let anyJson = try JSONSerialization.jsonObject(with: data)
+                  print("❌ Actual response type: \(type(of: anyJson))")
+                  let parseError = NSError(domain: "ParseError", code: 500, userInfo: [
+                      NSLocalizedDescriptionKey: "Response is not in expected format",
+                      "actualType": String(describing: type(of: anyJson))
+                  ])
+                  completion(.failure(parseError))
+              }
+          } catch {
+              print("❌ JSON parsing error: \(error)")
+              // Try to print the raw data for debugging
+              if let dataString = String(data: data, encoding: .utf8) {
+                  print("❌ Failed to parse data: \(dataString)")
+              }
+              completion(.failure(error))
+          }
+      }.resume()
+  }
 }

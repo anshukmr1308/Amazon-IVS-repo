@@ -17,7 +17,7 @@ class ChatModel: ObservableObject {
     var room: ChatRoom?
 
     @Published var messages: [ChatMessage] = []
-
+   
     func connectChatRoom(_ chatTokenRequest: ChatTokenRequest, onError: @escaping (String?) -> Void) {
         print("ℹ Connecting to chat room \(chatTokenRequest.chatRoomId)")
         tokenRequest = chatTokenRequest
@@ -45,6 +45,7 @@ class ChatModel: ObservableObject {
     }
 
     func sendMessage(_ message: String, user: User, onComplete: @escaping (String?) -> Void) {
+      print("messages---------------------------- \(messages)")
         let sendRequest = SendMessageRequest(content: message,
                                              attributes: [
                                                 "type": MessageType.message.rawValue,
@@ -54,6 +55,7 @@ class ChatModel: ObservableObject {
         room?.sendMessage(with: sendRequest,
                           onSuccess: { responseType in
             onComplete(nil)
+          
         },
                           onFailure: { chatError in
             print("❌ Error sending message: \(chatError)")

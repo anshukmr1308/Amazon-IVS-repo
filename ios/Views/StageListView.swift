@@ -110,14 +110,14 @@ struct StageList: View {
             }
 
             if isCameraPreviewPresent, let viewModel = services.viewModel {
-                JoinPreviewView(viewModel: viewModel, isPresent: $isCameraPreviewPresent, isLoading: $isLoading) {
-                    guard let stage = selectedStage else {
-                        print("❌ Can't join - no stage selected")
-                        return
-                    }
-                    isPresent = false
-                    onSelect(stage)
-                }
+//                JoinPreviewView(viewModel: viewModel, isPresent: $isCameraPreviewPresent, isLoading: $isLoading) {
+//                    guard let stage = selectedStage else {
+//                        print("❌ Can't join - no stage selected")
+//                        return
+//                    }
+//                    isPresent = false
+//                    onSelect(stage)
+//                }
             }
         }
         .onAppear {

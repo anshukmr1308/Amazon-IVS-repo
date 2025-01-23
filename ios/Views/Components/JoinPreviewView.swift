@@ -12,9 +12,10 @@ struct JoinPreviewView: View {
     @ObservedObject var viewModel: StageViewModel
     @Binding var isPresent: Bool
     @Binding var isLoading: Bool
+    @Binding var isPreviewActive: Bool
     let onJoin: () -> Void
 
-    @State var isPreviewActive: Bool = true
+//    @State var isPreviewActive: Bool = true
     @State var isFrontCameraActive: Bool = true
 
     var body: some View {
@@ -87,28 +88,28 @@ struct JoinPreviewView: View {
                     .padding(.horizontal, 8)
                   
 
-                    HStack {
-                        Button(action: {
-                            isPresent.toggle()
-                        }) {
-                            Text("Cancel")
-                                .modifier(ActionButton())
-                        }
-
-                        Button(action: {
-                            isLoading = true
-                            isPreviewActive = false
-
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                self.onJoin()
-                                self.isPresent.toggle()
-                            }
-                        }) {
-                            Text("Join")
-                                .modifier(ActionButton(color: .black, background: Color("Yellow")))
-                        }
-                    }
-                    .padding(.horizontal, 16)
+//                    HStack {
+//                        Button(action: {
+//                            isPresent.toggle()
+//                        }) {
+//                            Text("Cancel")
+//                                .modifier(ActionButton())
+//                        }
+//
+//                        Button(action: {
+//                            isLoading = true
+//                            isPreviewActive = false
+//
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                self.onJoin()
+//                                self.isPresent.toggle()
+//                            }
+//                        }) {
+//                            Text("Join")
+//                                .modifier(ActionButton(color: .black, background: Color("Yellow")))
+//                        }
+//                    }
+//                    .padding(.horizontal, 16)
                 }
                 .padding(.bottom, 15)
                 .background(Color("BackgroundLight"))
@@ -117,7 +118,24 @@ struct JoinPreviewView: View {
             .ignoresSafeArea(edges: .bottom)
         }
         .onAppear {
+          BroadcastEventEmitter.shared?.emitBroadcastDisappearEvent()
+          BroadcastEventEmitter.shared?.emitPreviewPageState(true)
             isPreviewActive = true
         }
     }
+  
+  func handleCancel() {
+          BroadcastEventEmitter.shared?.emitBroadcastAppearEvent()
+    BroadcastEventEmitter.shared?.emitPreviewPageState(false)
+          isPresent.toggle()
+      }
+      
+      func handleJoin() {
+          isLoading = true
+          isPreviewActive = false
+        BroadcastEventEmitter.shared?.emitPreviewPageState(false)
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+              self.onJoin()
+              self.isPresent.toggle()          }
+      }
 }
