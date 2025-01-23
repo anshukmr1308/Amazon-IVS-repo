@@ -55,10 +55,10 @@ class CameraPreviewController: UIViewController {
 
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         cameraPreviewLayer?.session = captureSession
-        cameraPreviewLayer?.frame = CGRect(x: view.frame.width / 5,
+        cameraPreviewLayer?.frame = CGRect(x:0,
                                            y: 0,
-                                           width: 100,
-                                           height: 120)
+                                           width: view.frame.width - 16,
+                                           height: 180)
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
         cameraPreviewLayer?.backgroundColor = UIColor.black.cgColor

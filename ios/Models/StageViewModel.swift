@@ -130,7 +130,7 @@ class StageViewModel: NSObject, ObservableObject {
         NotificationCenter.default.removeObserver(self, name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
     }
 
-    private func setupLocalUser() {
+    public func setupLocalUser() {
         setLocalCamera(to: .front)
 
 #if targetEnvironment(simulator)

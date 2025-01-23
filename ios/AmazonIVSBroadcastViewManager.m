@@ -23,5 +23,9 @@
 
 @interface RCT_EXTERN_MODULE(AmazonIVSBroadcastViewManager, RCTViewManager)
 RCT_EXTERN_METHOD(createStageFromReact)
+RCT_EXTERN_METHOD(onClickStageFromReact:(NSDictionary *)stage)
+RCT_EXTERN_METHOD(handleCancelFromReact)
+RCT_EXTERN_METHOD(handleJoinFromReact)
+RCT_EXTERN_METHOD(sendMessageFromReact:(NSString *)message)
 @end
 

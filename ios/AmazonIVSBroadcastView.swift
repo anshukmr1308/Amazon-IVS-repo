@@ -118,41 +118,13 @@ class BroadcastViewState: ObservableObject {
     @Published var isCameraPreviewPresent: Bool = false
     @Published var selectedStage: StageDetails?
     @Published var stages: [StageDetails] = []
+    @Published var isPreviewActive: Bool = true
 }
 
 struct AmazonIVSBroadcastView: View {
     @ObservedObject var services = ServicesManager()
   @ObservedObject var viewState: BroadcastViewState
-//    @State var isWelcomePresent: Bool = true
-//    @State var isSetupPresent: Bool = true
-//    @State var isStageListPresent: Bool = false
-////    @State var isStagePresent: Bool = false
-//    @State var isLoading: Bool = false
-//  @State var username: String = "Vijay"
-//  @State var avatarUrl: String = "https://d39ii5l128t5ul.cloudfront.net/assets/animals_square/bear.png"
-//  @State var joinToken: String = ""
-//  @State var stages: [StageDetails] = []
-//  @State var isCameraPreviewPresent: Bool = false
-//  @State var selectedStage: StageDetails?
-//  @State private var isStagePresent: Bool = false
-//  @State private var isSetupPresent: Bool = true
-//  @State private var isWelcomePresent: Bool = true
-//  @Binding var isStagePresentFromReact: Bool
-//
-  
-//  @StateObject private var viewState = ViewState()
-     
-     // Move state to a separate ObservableObject for better management
-//     class ViewState: ObservableObject {
-//         @Published var isStageListPresent: Bool = false
-//         @Published var isLoading: Bool = false
-//         @Published var isStagePresent: Bool = false
-//         @Published var isSetupPresent: Bool = true
-//         @Published var isWelcomePresent: Bool = true
-//         @Published var isCameraPreviewPresent: Bool = false
-//         @Published var selectedStage: StageDetails?
-//         @Published var stages: [StageDetails] = []
-//     }
+
   
   var username: String = "Vijay"
      var avatarUrl: String = "https://d39ii5l128t5ul.cloudfront.net/assets/animals_square/bear.png"
@@ -175,69 +147,16 @@ struct AmazonIVSBroadcastView: View {
                                   backAction: backAction)
                              .transition(.slide)
                      }
-          
-//          if isSetupPresent {
-//              SetupView(isPresent: $isSetupPresent,
-//                        isLoading: $isLoading,
-//                        isStageListPresent: $isStageListPresent,
-//                        onComplete: { (user, token) in
-//                  services.viewModel?.clearNotifications()
-//                  services.user = user
-//
-//                  if user.isHost {
-//                      services.viewModel?.createStage(user: user) { success in
-//                          if success {
-//                              services.viewModel?.initializeStage(onComplete: {
-//                                  services.viewModel?.joinAsHost() { success in
-//                                      if success {
-//                                          presentStage()
-//                                      }
-//                                      isLoading = false
-//                                  }
-//                              })
-//                          } else {
-//                              isLoading = false
-//                          }
-//                      }
-//                  } else if let token = token {
-//                      services.viewModel?.initializeStage(onComplete: {
-//                          services.viewModel?.joinAsParticipant(token) {
-//                              presentStage()
-//                              isLoading = false
-//                          }
-//                      })
-//                  }
-//              })
-//          }
+
 
           if viewState.isSetupPresent {
               ZStack(alignment: .topLeading) {
                   Color("Background")
                       .edgesIgnoringSafeArea(.all)
 
-                  VStack(alignment: .leading, spacing: 0) {
-                      Text("Stages")
-                          .modifier(TitleLeading())
-
-                    if !(viewState.stages.first?.stageId.isEmpty ?? false) {
-                          Text("All stages")
-                              .modifier(TableHeader())
-                      }
-
-                      Spacer()
-
-//                      Button(action: {
-//                        createStage()
-//                      }) {
-//                          Text("Create new stage")
-//                              .modifier(PrimaryButton())
-//                      }
-//                      .padding(.top, 5)
-                  }
-
                 if viewState.isCameraPreviewPresent, let viewModel = services.viewModel {
                       JoinPreviewView(viewModel: viewModel, isPresent:
-                                        $viewState.isCameraPreviewPresent, isLoading: $viewState.isLoading) {
+                                        $viewState.isCameraPreviewPresent, isLoading: $viewState.isLoading, isPreviewActive: $viewState.isPreviewActive) {
                         guard let stage = viewState.selectedStage else {
                               print("❌ Can't join - no stage selected")
                               return
@@ -249,6 +168,8 @@ struct AmazonIVSBroadcastView: View {
               }
               .onAppear {
                 viewState.isLoading = true
+                BroadcastEventEmitter.shared?.emitBroadcastAppearEvent()
+
                   DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                       services.viewModel?.getAllStages(initial: true) { allStages in
                         viewState.stages = allStages
@@ -277,6 +198,11 @@ struct AmazonIVSBroadcastView: View {
          viewState.isLoading = true
          handleSetupCompletion(user: updateUser(true), token: nil)
      }
+  
+  public func onClickStage(stage: StageDetails) {
+    viewState.selectedStage = stage
+    viewState.isCameraPreviewPresent = true
+  }
 
   private func joinStage(_ stage: StageDetails) {
     viewState.isLoading = true
@@ -328,7 +254,7 @@ struct AmazonIVSBroadcastView: View {
               services.viewModel?.initializeStage {
                   services.viewModel?.joinAsParticipant(token) {
                       presentStage()
-                    viewState.isLoading = false
+                      viewState.isLoading = false
                   }
               }
           }
@@ -352,6 +278,7 @@ struct AmazonIVSBroadcastView: View {
   
   
     private func backAction() {
+      BroadcastEventEmitter.shared?.emitBroadcastAppearEvent()
       viewState.isSetupPresent = true
       viewState.isStageListPresent = true
         withAnimation {
@@ -359,4 +286,58 @@ struct AmazonIVSBroadcastView: View {
         }
       viewState.isLoading = false
     }
+  
+  func handleCancel() {
+//         if let viewModel = services.viewModel {
+//             JoinPreviewView(viewModel: viewModel,
+//                           isPresent: $viewState.isCameraPreviewPresent,
+//                           isLoading: $viewState.isLoading) {
+//                 // onJoin closure
+//             }.handleCancel()
+//         }
+     }
+
+  func handleJoin() {
+      viewState.isLoading = true
+      viewState.isPreviewActive = false
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          guard let stage = viewState.selectedStage else {
+              print("❌ Can't join - no stage selected")
+              viewState.isLoading = false
+              return
+          }
+          
+          // Toggle camera preview presence to match Swift button behavior
+          viewState.isCameraPreviewPresent = false
+          
+          // Then proceed with joining stage
+          viewState.isStageListPresent = false
+          joinStage(stage)
+      }
+  }
+  
+  //         if let viewModel = services.viewModel {
+  //             JoinPreviewView(viewModel: viewModel,
+  //                           isPresent: $viewState.isCameraPreviewPresent,
+  //                           isLoading: $viewState.isLoading) {
+  //                 // onJoin closure
+  //                 guard let stage = viewState.selectedStage else {
+  //                     print("❌ Can't join - no stage selected")
+  //                     return
+  //                 }
+  //                 viewState.isStageListPresent = false
+  //                 joinStage(stage)
+  //             }.handleJoin()
+  //         }
+  
+  func sendMessage(_ message: String) {
+         if let viewModel = services.viewModel {
+             services.chatModel.sendMessage(message, user: services.user) { error in
+                 if let error = error {
+                     viewModel.appendErrorNotification(error)
+                 }
+             }
+         }
+     }
 }

@@ -46,7 +46,7 @@ struct StageView: View {
                     }
 
                     ChatView(chatModel: services.chatModel, isPresent: $isChatPresent)
-                        .padding(.bottom, -250)
+                        .padding(.bottom, 90)
 
                 
                     ControlButtonsDrawer(viewModel: services.viewModel!,
@@ -70,6 +70,7 @@ struct StageView: View {
             }
         }
         .onAppear {
+          BroadcastEventEmitter.shared?.emitBroadcastDisappearEvent()
             isChatPresent = !services.user.isHost
         }
         .onTapGesture {
