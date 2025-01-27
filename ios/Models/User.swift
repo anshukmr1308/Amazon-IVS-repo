@@ -11,7 +11,7 @@ class User: NSObject, ObservableObject, Codable {
     var username: String?
     var avatarUrl: String?
     var participantId: String?
-    var isHost: Bool = false
+    @Published var isHost: Bool = false
     @Published var videoOn: Bool = true
     @Published var audioOn: Bool = true
 
