@@ -62,6 +62,7 @@ class ServicesManager: ObservableObject {
         self.server = Server()
         self.user = User(username: UserDefaults.standard.string(forKey: "username") ?? "",
                          avatarUrl: UserDefaults.standard.string(forKey: "avatar") ?? Constants.userAvatarUrls.first ?? "")
+      print("ServicesManager init isHost:*************************************************", self.user.isHost)
         self.viewModel = StageViewModel(services: self)
         server.delegate = viewModel
     }

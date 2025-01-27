@@ -60,6 +60,15 @@ struct ControlButtonsDrawer: View {
                     .padding(.horizontal, 16)
                 }
             }
+            .onAppear {
+                        print("isHost value:--------------------------------", services.user.isHost)
+                    }
+            .onChange(of: services.user.isHost) { newValue in
+              print("isHost changed to--------------------------------------:", newValue)
+          }
+            .onReceive(services.user.$isHost) { value in
+                        print("ControlButtonsDrawer - isHost updated to:", value)
+                    }
             .frame(width: UIScreen.main.bounds.width)
             .background(Color("BackgroundLight"))
             .cornerRadius(30)

@@ -112,7 +112,7 @@ const AmazonIVSBroadcastView = () => {
         </>
       )}
 
-      <ChatInput />
+      {/* <ChatInput /> */}
     </>
 
   );

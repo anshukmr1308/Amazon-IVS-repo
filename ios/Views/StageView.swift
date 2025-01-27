@@ -52,7 +52,7 @@ struct StageView: View {
                     ControlButtonsDrawer(viewModel: services.viewModel!,
                                          isExpanded: $isControlsExpanded,
                                          isChatPresent: $isChatPresent)
-                        .padding(.bottom, !isControlsExpanded && services.user.isHost ? 0 : 0)
+                        .padding(.bottom, !isControlsExpanded && services.user.isHost ? -145 : 0)
                         .onTapGesture {
                             guard !isControlsExpanded else { return }
                             withAnimation {
