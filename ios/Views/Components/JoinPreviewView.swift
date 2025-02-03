@@ -134,8 +134,9 @@ struct JoinPreviewView: View {
           isLoading = true
           isPreviewActive = false
         BroadcastEventEmitter.shared?.emitPreviewPageState(false)
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-              self.onJoin()
-              self.isPresent.toggle()          }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          self.onJoin()
+          self.isPresent.toggle()
+        }
       }
 }

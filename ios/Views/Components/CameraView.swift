@@ -20,6 +20,11 @@ struct CameraView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: CameraPreviewController, context: Context) {
+      
+      print("isPreviewActive:--------------------------------------------------------- \(isPreviewActive)")
+         print("isFrontCameraActive:--------------------------------------------------- \(isFrontCameraActive)")
+      
+      
         if isPreviewActive {
             uiViewController.startCaptureSession()
         } else {
