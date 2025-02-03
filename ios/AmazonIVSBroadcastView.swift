@@ -154,17 +154,17 @@ struct AmazonIVSBroadcastView: View {
                   Color("Background")
                       .edgesIgnoringSafeArea(.all)
 
-//                if viewState.isCameraPreviewPresent, let viewModel = services.viewModel {
-//                      JoinPreviewView(viewModel: viewModel, isPresent:
-//                                        $viewState.isCameraPreviewPresent, isLoading: $viewState.isLoading, isPreviewActive: $viewState.isPreviewActive) {
-//                        guard let stage = viewState.selectedStage else {
-//                              print("❌ Can't join - no stage selected")
-//                              return
-//                          }
-//                        viewState.isStageListPresent = false
-//                        joinStage(stage)
-//                      }
-//                  }
+                if viewState.isCameraPreviewPresent, let viewModel = services.viewModel {
+                      JoinPreviewView(viewModel: viewModel, isPresent:
+                                        $viewState.isCameraPreviewPresent, isLoading: $viewState.isLoading, isPreviewActive: $viewState.isPreviewActive) {
+                        guard let stage = viewState.selectedStage else {
+                              print("❌ Can't join - no stage selected")
+                              return
+                          }
+                        viewState.isStageListPresent = false
+                        joinStage(stage)
+                      }
+                  }
               }
               .onAppear {
                 viewState.isLoading = true
@@ -239,33 +239,32 @@ struct AmazonIVSBroadcastView: View {
           services.user = user
     
           if user.isHost {
-            print("After setting user in handleSetupCompletion:-------------------------------------------",  user.isHost )
+            
               services.viewModel?.createStage(user: user) { success in
                   if success {
-                      services.viewModel?.initializeStage {
-                          services.viewModel?.joinAsHost { success in
-                              if success {
-                                print("After:-------------------------------------------",  user.isHost )
-                                  presentStage()
-                              }
-                            DispatchQueue.main.async {
-                                        viewState.isLoading = false
-                                    }
-                          }
-                      }
+                      services.viewModel?.initializeStage (onComplete: {
+                        services.viewModel?.joinAsHost() { success in
+                            if success {
+                                presentStage()
+                            }
+                          viewState.isLoading = false
+                        }
+                    })
                   } else {
                     viewState.isLoading = false
                   }
               }
           } else if let token = token {
-              services.viewModel?.initializeStage {
-                  services.viewModel?.joinAsParticipant(token) {
-                      presentStage()
-                    DispatchQueue.main.async {
-                                viewState.isLoading = false
-                            }
-                  }
-              }
+              services.viewModel?.initializeStage (onComplete: {
+                services.viewModel?.joinAsParticipant(token) {
+                 
+                  DispatchQueue.main.async {
+                             presentStage()
+                             viewState.isLoading = false
+                   }
+                   
+                }
+            })
           }
       }
 
@@ -287,7 +286,9 @@ struct AmazonIVSBroadcastView: View {
         withAnimation {
           viewState.isStagePresent = false
         }
-      viewState.isLoading = false
+      DispatchQueue.main.async {
+                 viewState.isLoading = false
+       }
     }
   
   func handleCancel() {
@@ -302,20 +303,23 @@ struct AmazonIVSBroadcastView: View {
      }
 
   func handleJoin() {
-//             if let viewModel = services.viewModel {
-//                 JoinPreviewView(viewModel: viewModel,
-//                               isPresent: $viewState.isCameraPreviewPresent,
-//                               isLoading: $viewState.isLoading,
-//                                 isPreviewActive: $viewState.isPreviewActive
-//                 ) {
-//                     guard let stage = viewState.selectedStage else {
-//                         print("❌ Can't join - no stage selected")
-//                         return
-//                     }
-//                     viewState.isStageListPresent = false
-//                     joinStage(stage)
-//                 }.handleJoin()
-//      }
+             if let viewModel = services.viewModel {
+                 JoinPreviewView(viewModel: viewModel,
+                               isPresent: $viewState.isCameraPreviewPresent,
+                               isLoading: $viewState.isLoading,
+                                 isPreviewActive: $viewState.isPreviewActive
+                 ) {
+                     guard let stage = viewState.selectedStage else {
+                         print("❌ Can't join - no stage selected")
+                         return
+                     }
+                   DispatchQueue.main.async {
+                     viewState.isStageListPresent = false
+                    }
+
+                     joinStage(stage)
+                 }.handleJoin()
+      }
   }
 
   

@@ -58,6 +58,7 @@ struct SetupView: View {
             if let token = stageJoinResponse?.stage.token {
                 print("ℹ stage auth successful - got token: \(token)")
                 services.server.stageDetails = stage
+              print("❌ -------------------------------------------------, \(services.server.stageHostDetails)")
                 services.server.joinedStagePlaybackUrl = services.server.stageHostDetails?.channel.playbackUrl ?? ""
                 onComplete(updateUser(), stageJoinResponse?.stage.token.token)
             } else {

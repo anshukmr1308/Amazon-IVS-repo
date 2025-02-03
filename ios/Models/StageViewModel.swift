@@ -251,6 +251,7 @@ class StageViewModel: NSObject, ObservableObject {
     }
 
     func joinAsParticipant(_ token: String, onSuccess: () -> Void) {
+      print("❌----------❌------------------❌----------------❌-------------------❌11111")
         joinStage(token, onSuccess: onSuccess)
 
         if let chat = services.server.stageJoinDetails?.chat {
@@ -277,7 +278,8 @@ class StageViewModel: NSObject, ObservableObject {
         }
     }
 
-    private func joinStage(_ token: String, onSuccess: () -> Void) {
+    public func joinStage(_ token: String, onSuccess: () -> Void) {
+      print("❌----------❌------------2222222222------❌----------------❌-------------------❌")
         do {
             self.stage = nil
             let stage = try IVSStage(token: token, strategy: self)
@@ -288,9 +290,11 @@ class StageViewModel: NSObject, ObservableObject {
             appendSuccessNotification(self.services.user.isHost ? "Stage Created" : "Stage Joined")
             print("ℹ stage joined")
             currentJoinToken = token
-            DispatchQueue.main.async {
-                self.sessionRunning = true
-            }
+         DispatchQueue.main.async {
+           self.sessionRunning = true
+                     print("❌----------❌-----------sessionRunning-: \(self.sessionRunning)")
+                }
+         
             onSuccess()
 
         } catch {
@@ -328,6 +332,7 @@ class StageViewModel: NSObject, ObservableObject {
 
 
     func endSession() {
+      print("❌----------❌-----------Ending session❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌-: \(sessionRunning)")
         print("ℹ Ending session...")
         sessionRunning = false
         leaveStage()

@@ -45,7 +45,7 @@ struct ControlButtonsDrawer: View {
                 }
                 .frame(height: 30)
                 .padding(.bottom, services.user.isHost ? 0 : 30)
-
+             
                 if services.user.isHost {
                     VStack {
                         Button(action: {

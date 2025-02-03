@@ -26,7 +26,7 @@ class User: NSObject, ObservableObject, Codable {
         return lhs.userId == rhs.userId && lhs.username == rhs.username
     }
 
-    override var hash: Int {
+  override var hash: Int {
         var hasher = Hasher()
         hasher.combine(username)
         hasher.combine(avatarUrl)
@@ -46,7 +46,7 @@ class User: NSObject, ObservableObject, Codable {
         isHost = try container.decode(Bool.self, forKey: .isHost)
     }
 
-    func encode(to encoder: Encoder) throws {
+  func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(videoOn, forKey: .videoOn)
         try container.encode(audioOn, forKey: .audioOn)
